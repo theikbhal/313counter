@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   ReactFlow,
@@ -18,6 +18,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import { toPng } from "html-to-image";
 import CounterNode, { type CounterNodeData, type CounterNodeType } from "@/components/graph/CounterNode";
+import Onboarding from "@/components/graph/Onboarding";
 
 const nodeTypes = { counter: CounterNode };
 
@@ -91,6 +92,7 @@ export default function NodeGraphPage() {
 
 function NodeGraphInner() {
   const { getNodes } = useReactFlow();
+  const [helpKey, setHelpKey] = useState(0);
 
   const [nodes, setNodes, onNodesChange] = useNodesState<CounterNodeModel>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
@@ -282,6 +284,13 @@ function NodeGraphInner() {
         </h1>
         <div className="flex items-center gap-1">
           <button
+            onClick={() => setHelpKey((k) => k + 1)}
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 text-sm text-zinc-500 transition hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-900"
+            aria-label="How to use"
+          >
+            ?
+          </button>
+          <button
             onClick={() => {
               setNodes([]);
               setEdges([]);
@@ -339,7 +348,7 @@ function NodeGraphInner() {
         </div>
       </div>
 
-      <div className="h-[540px] overflow-hidden rounded-3xl border border-zinc-100 bg-zinc-50 dark:border-zinc-900 dark:bg-zinc-950">
+      <div className="h-[600px] overflow-hidden rounded-3xl border border-zinc-100 bg-zinc-50 dark:border-zinc-900 dark:bg-zinc-950">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -348,7 +357,9 @@ function NodeGraphInner() {
           onConnect={onConnect}
           nodeTypes={nodeTypes}
           fitView
-          fitViewOptions={{ padding: 0.2 }}
+          fitViewOptions={{ padding: 0.15 }}
+          minZoom={0.2}
+          maxZoom={2.5}
           deleteKeyCode={["Backspace", "Delete"]}
           defaultEdgeOptions={{ type: "smoothstep" }}
           proOptions={{ hideAttribution: true }}
@@ -373,7 +384,7 @@ function NodeGraphInner() {
           sub-node&apos;s count is added to its parent&apos;s progress toward its goal. Drag from a
           node&apos;s bottom handle to another node&apos;s top handle to connect them.
         </p>
-        <ul className="flex flex-col gap-1.5">
+        <ul className="flex max-h-48 flex-col gap-1.5 overflow-y-auto pr-1">
           {nodes.map((n) => {
             const subs = contributors[n.id] || [];
             const subCount = subs.reduce((a, s) => a + s.data.count, 0);
@@ -407,9 +418,11 @@ function NodeGraphInner() {
 
       <footer className="mt-2 flex flex-col items-center gap-2 border-t border-zinc-100 pt-6 text-center dark:border-zinc-900">
         <p className="max-w-xs text-xs leading-5 text-zinc-400 dark:text-zinc-500">
-          New idea — movable counter nodes with pan, zoom, sub-nodes, and export.
+          Movable counter nodes with pan, zoom, sub-nodes, and export. Supports 30+ nodes.
         </p>
       </footer>
+
+      <Onboarding key={helpKey} force={helpKey > 0} onDone={() => setHelpKey((k) => k)} />
     </main>
   );
 }
