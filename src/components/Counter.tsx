@@ -16,13 +16,19 @@ function todayKey() {
   return new Date().toISOString().slice(0, 10);
 }
 
-function loadAll(): Record<string, number> {
+function loadAll(): Record<string, Record<ZikrKey, number>> {
   if (typeof window === "undefined") return {};
   try {
     return JSON.parse(localStorage.getItem("zikr-counts") || "{}");
   } catch {
     return {};
   }
+}
+
+function loadActive(): ZikrKey {
+  if (typeof window === "undefined") return "darood";
+  const stored = localStorage.getItem("zikr-active");
+  return stored === "istighfar" || stored === "darood" ? stored : "darood";
 }
 
 function loadTargets(): Record<ZikrKey, number> {
@@ -46,8 +52,8 @@ function initialDark(): boolean {
 export default function Counter() {
   const [dark, setDark] = useState(initialDark);
   const [targets, setTargets] = useState<Record<ZikrKey, number>>(loadTargets);
-  const [counts, setCounts] = useState<Record<string, number>>(loadAll);
-  const [active, setActive] = useState<ZikrKey>("darood");
+  const [counts, setCounts] = useState<Record<string, Record<ZikrKey, number>>>(loadAll);
+  const [active, setActive] = useState<ZikrKey>(loadActive);
   const [justFinished, setJustFinished] = useState(false);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState({ darood: 313, istighfar: 100 });
@@ -64,7 +70,11 @@ export default function Counter() {
     localStorage.setItem("zikr-counts", JSON.stringify(counts));
   }, [counts]);
 
-  const nowCount = counts[todayKey()] || 0;
+  useEffect(() => {
+    localStorage.setItem("zikr-active", active);
+  }, [active]);
+
+  const nowCount = counts[todayKey()]?.[active] || 0;
   const target = targets[active] || DEFAULTS.find((z) => z.key === active)!.target;
   const progress = Math.min(1, nowCount / target);
   const isDone = nowCount >= target;
@@ -72,23 +82,25 @@ export default function Counter() {
   const increment = useCallback(
     (n = 1) => {
       const key = todayKey();
-      const current = counts[key] || 0;
+      const current = counts[key]?.[active] || 0;
       const next = Math.min(MAX, current + n);
-      setCounts((c) => ({ ...c, [key]: next }));
+      setCounts((c) => ({ ...c, [key]: { ...c[key], [active]: next } }));
       if (next >= target) setJustFinished(true);
     },
-    [counts, target]
+    [counts, active, target]
   );
 
   const reset = useCallback(() => {
     setCounts((c) => {
       const key = todayKey();
       const copy = { ...c };
-      delete copy[key];
+      const today = { ...copy[key] };
+      delete today[active];
+      copy[key] = today;
       return copy;
     });
     setJustFinished(false);
-  }, []);
+  }, [active]);
 
   const current = useMemo(() => DEFAULTS.find((z) => z.key === active)!, [active]);
 
@@ -154,7 +166,9 @@ export default function Counter() {
             }`}
           >
             <div className="text-sm font-medium">{z.label}</div>
-            <div className="text-xs opacity-60">{targets[z.key]?.toLocaleString()}</div>
+            <div className="text-xs opacity-60">
+              {(counts[todayKey()]?.[z.key] || 0).toLocaleString()}
+            </div>
           </button>
         ))}
       </nav>
