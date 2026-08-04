@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 
 type ZikrKey = "darood" | "istighfar";
 type Zikr = { key: ZikrKey; label: string; target: number };
@@ -189,8 +190,8 @@ export default function Counter() {
         </button>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 sm:grid-cols-7">
-        {[1, 5, 10, 20, 30, 31, 33].map((n) => (
+      <div className="grid grid-cols-4 gap-2">
+        {[1, 2, 5, 10, 15, 20, 30, 31, 33, 50, 100, 133, 150, 200].map((n) => (
           <button
             key={n}
             onClick={() => increment(n)}
@@ -212,7 +213,40 @@ export default function Counter() {
         >
           Targets
         </button>
+        <Link
+          href="/steps"
+          className="rounded-full bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+        >
+          Step Counter →
+        </Link>
       </div>
+
+      <footer className="mt-2 flex flex-col items-center gap-2 border-t border-zinc-100 pt-6 text-center dark:border-zinc-900">
+        <p className="max-w-xs text-xs leading-5 text-zinc-400 dark:text-zinc-500">
+          Built as a simple daily habit tracker for Darood & Istighfar — make your
+          zikr easy to complete, one tap at a time.
+        </p>
+        <p className="text-xs text-zinc-400 dark:text-zinc-500">
+          Dev: <span className="font-medium text-zinc-500 dark:text-zinc-400">theikbhal</span>
+        </p>
+        <div className="flex items-center gap-3 text-xs">
+          <a
+            href="mailto:theikbhal@gmail.com"
+            className="text-zinc-500 underline-offset-2 transition hover:text-zinc-800 hover:underline dark:text-zinc-400 dark:hover:text-zinc-200"
+          >
+            theikbhal@gmail.com
+          </a>
+          <span className="text-zinc-300 dark:text-zinc-700">·</span>
+          <a
+            href="https://wa.me/919901014560"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-zinc-500 underline-offset-2 transition hover:text-zinc-800 hover:underline dark:text-zinc-400 dark:hover:text-zinc-200"
+          >
+            WhatsApp +91 9901014560
+          </a>
+        </div>
+      </footer>
 
       {editing && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 sm:items-center">
