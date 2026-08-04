@@ -19,6 +19,18 @@ const IDEAS = [
     desc: "The target is a big jar; fill small jars and pour them into it.",
     emoji: "🫙",
   },
+  {
+    href: "/jar-v2",
+    title: "Jars v2 · Cascade",
+    desc: "Lowest jar fills, pours into the next, and empties itself.",
+    emoji: "🌊",
+  },
+  {
+    href: "/jar-v3",
+    title: "Jars v3 · Drag",
+    desc: "Drag a small jar onto the big jar; it resets back after pouring.",
+    emoji: "🤏",
+  },
 ];
 
 export default function IdeasPage() {
