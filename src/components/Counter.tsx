@@ -213,12 +213,20 @@ export default function Counter() {
         >
           Targets
         </button>
-        <Link
-          href="/steps"
-          className="rounded-full bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
-        >
-          Step Counter →
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/steps"
+            className="rounded-full border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-600 transition hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-900"
+          >
+            Step Counter
+          </Link>
+          <Link
+            href="/ideas"
+            className="rounded-full bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+          >
+            Ideas →
+          </Link>
+        </div>
       </div>
 
       <footer className="mt-2 flex flex-col items-center gap-2 border-t border-zinc-100 pt-6 text-center dark:border-zinc-900">
