@@ -31,6 +31,12 @@ const IDEAS = [
     desc: "Drag a small jar onto the big jar; it resets back after pouring.",
     emoji: "🤏",
   },
+  {
+    href: "/node-graph",
+    title: "Node Graph",
+    desc: "Movable counter nodes with sub-nodes, zoom, pan, and export.",
+    emoji: "🕸️",
+  },
 ];
 
 export default function IdeasPage() {
@@ -75,7 +81,7 @@ export default function IdeasPage() {
 
       <footer className="mt-2 flex flex-col items-center gap-2 border-t border-zinc-100 pt-6 text-center dark:border-zinc-900">
         <p className="max-w-xs text-xs leading-5 text-zinc-400 dark:text-zinc-500">
-          Idea 4 — coming soon.
+          More ideas coming soon.
         </p>
       </footer>
     </main>
