@@ -175,6 +175,19 @@ export default function Counter() {
         </button>
       </div>
 
+      <div className="grid grid-cols-3 gap-2 sm:grid-cols-7">
+        {[1, 5, 10, 20, 30, 31, 33].map((n) => (
+          <button
+            key={n}
+            onClick={() => increment(n)}
+            disabled={isDone}
+            className="h-11 rounded-full border border-zinc-200 text-sm font-medium text-zinc-600 transition active:scale-95 disabled:opacity-40 dark:border-zinc-800 dark:text-zinc-400"
+          >
+            +{n}
+          </button>
+        ))}
+      </div>
+
       <div className="flex items-center justify-between">
         <button
           onClick={() => {
@@ -185,18 +198,6 @@ export default function Counter() {
         >
           Targets
         </button>
-        <div className="flex items-center gap-2">
-          {[1, 5, 10].map((n) => (
-            <button
-              key={n}
-              onClick={() => increment(n)}
-              disabled={isDone}
-              className="h-10 w-12 rounded-full border border-zinc-200 text-sm font-medium text-zinc-600 transition active:scale-95 disabled:opacity-40 dark:border-zinc-800 dark:text-zinc-400"
-            >
-              +{n}
-            </button>
-          ))}
-        </div>
       </div>
 
       {editing && (
