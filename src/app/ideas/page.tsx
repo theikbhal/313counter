@@ -37,6 +37,12 @@ const IDEAS = [
     desc: "Movable counter nodes with sub-nodes, zoom, pan, and export.",
     emoji: "🕸️",
   },
+  {
+    href: "/cards",
+    title: "Cards",
+    desc: "313 horizontal cards in 3 vertical lines — fill each one as you count.",
+    emoji: "🃏",
+  },
 ];
 
 export default function IdeasPage() {
